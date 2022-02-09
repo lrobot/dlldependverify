@@ -1,0 +1,61 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "windows": {
+    "options": {
+      "shell": {
+        "executable": "cmd.exe",
+        "args": [
+          "/C",
+          // The path to VsDevCmd.bat depends on the version of Visual Studio you have installed.
+          "\"C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/Common7/Tools/VsDevCmd.bat\"",
+          "-arch=amd64",
+          "&&"
+        ]
+      }
+    }
+  },
+
+  "tasks": [
+    {
+      "label": "echo",
+      "type": "shell",
+      "command": "echo Hello"
+    },
+    {
+      "label": "mkdir_out",
+      "type": "shell",
+      "command": "mkdir",
+      "args": ["out"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ],
+    },
+    {
+      "type": "shell",
+      "label": "C/C++: cl.exe build active file",
+      "command": "cl.exe",
+      "args": [
+        "/Zi",
+        "/EHsc",
+        "/nologo",
+        "/Fe:",
+        "${workspaceFolder}\\out\\${fileBasenameNoExtension}.exe",
+        "${file}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}\\out"
+      },
+      "dependsOn" :["mkdir_out"],
+      "problemMatcher": [
+        "$msCompile"
+      ],
+      "group": "build",
+      "detail": "compiler: cl.exe"
+    }
+  ]
+}
